@@ -250,11 +250,20 @@ public class Principal {
         System.out.println();
         
         if (decisao == 1){
-            System.out.println("Nome | Cidade | Ano de Fundação");
+            ArrayList<Time> timesGeral = new ArrayList<Time>();
+
             for (TimeDeFutebol time : listaTimesFutebol){
-                System.out.println(time.nome + " | " + time.cidade + " | " + time.anoFundacao);
+                timesGeral.add(time);
             }
             for (TimeDeBasquete time : listaTimesBasquete){
+                timesGeral.add(time);
+            }
+            
+            listagemOrdenada(timesGeral);
+
+            System.out.println("Nome | Cidade | Ano de Fundação");
+
+            for (Time time : timesGeral){
                 System.out.println(time.nome + " | " + time.cidade + " | " + time.anoFundacao);
             }
         } 
@@ -276,6 +285,24 @@ public class Principal {
             }
         }
         System.out.println();
+    }
+    
+    public static void listagemOrdenada(ArrayList<Time> timesGeral){
+        System.out.println();
+        System.out.println("1| Nome");
+        System.out.println("2| Cidade");
+        System.out.println("3| Ano de fundação");
+        resposta = lerInt("Digite por qual atributo você deseja ordenar a lista: ");
+
+        if(resposta == 1){
+            timesGeral.sort(Comparator.comparing(Time::getNome));
+        }
+        else if(resposta == 2){
+            timesGeral.sort(Comparator.comparing(Time::getCidade));
+        }
+        else{
+            timesGeral.sort(Comparator.comparing(Time::getAnoFundacao));
+        }
     }
     
     public static int lerInt(String texto){ // Função para receber valores inteiros do usuário
