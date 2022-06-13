@@ -43,7 +43,8 @@ public class Principal {
     
     public static int escolhaMenu(String frase){ // Função que imprime o menu e depois recebe um valor do usuário
         int escolha = 0;
-        if(escolha < 1 || escolha > 5){
+        while(escolha < 1 || escolha > 5){
+            System.out.println();
             System.out.println("--------------- MENU ---------------");
             System.out.println("1| Cadastrar time");
             System.out.println("2| Editar time");
@@ -73,6 +74,7 @@ public class Principal {
     }
     
     public static int escolhaModalidades(String frase){ // Imprime um mini Menu para o usuário selecionar a modalidade do time
+        System.out.println();
         System.out.println("1| Futebol");
         System.out.println("2| Basquete");
         return lerInt(frase);
@@ -91,7 +93,8 @@ public class Principal {
     public static void cadastroManual(int modalidade, ArrayList<TimeDeFutebol> listaTimesFutebol, ArrayList<TimeDeBasquete> listaTimesBasquete){ // Função que permite o usuário cadastrar manualmente um novo objeto, além de inserir na sua respectiva lista
         String nome, cidade, tecnico;
         int anoFundacao, tamanhoElenco; 
-        
+        boolean existe = false;
+
         nome = lerString("Digite o nome do time: ");
         cidade = lerString("Digite a cidade em que o " + nome + " foi fundado: ");
         anoFundacao = lerInt("Digite o ano em que o " + nome + " nasceu: ");
@@ -102,20 +105,40 @@ public class Principal {
             String capitao = lerString("Digite o nome do capitão do time: ");
             double aproveitamentoCasa = lerDouble("Digite o aproveitamento em casa do time na atual temporada: ");
             
-            TimeDeFutebol NovoTime = new TimeDeFutebol(nome, cidade, tecnico, anoFundacao, tamanhoElenco, capitao, aproveitamentoCasa);  
-            listaTimesFutebol.add(NovoTime); 
+            for (TimeDeFutebol time : listaTimesFutebol){
+                if (time.nome.equals(nome)){
+                    System.out.println("Já tem um time registrado com esse nome.");
+                    existe = true;
+                    break;
+                }
+            }   
+
+            if(existe == false){
+                TimeDeFutebol NovoTime = new TimeDeFutebol(nome, cidade, tecnico, anoFundacao, tamanhoElenco, capitao, aproveitamentoCasa);  
+                listaTimesFutebol.add(NovoTime);
+            }  
         }
         else{
             double mediaAltura = lerDouble("Digite a média de altura do time: ");
             double aproveitamentoTiroLivre = lerDouble("Digite o aproveitamento de tiro livre geral do time: ");
             
-            TimeDeBasquete NovoTime = new TimeDeBasquete(nome, cidade, tecnico, anoFundacao, tamanhoElenco, mediaAltura, aproveitamentoTiroLivre);
-            listaTimesBasquete.add(NovoTime);
+            for (TimeDeBasquete time : listaTimesBasquete){
+                if (time.nome.equals(nome)){
+                    System.out.println("Já tem um time registrado com esse nome.");
+                    existe = true;
+                    break;
+                }
+            } 
+
+            if(existe == false){
+                TimeDeBasquete NovoTime = new TimeDeBasquete(nome, cidade, tecnico, anoFundacao, tamanhoElenco, mediaAltura, aproveitamentoTiroLivre);
+                listaTimesBasquete.add(NovoTime);
+            }
         }  
     }
     
     public static void editarTime(ArrayList<TimeDeFutebol> listaTimesFutebol, ArrayList<TimeDeBasquete> listaTimesBasquete){ // Função que permite o usuário editar todos os dados do time, exceto sua modalidade
-        boolean verificacaoFutebol = false, verificacaoBasquete = false;
+        boolean verificacaoFutebol = false, verificacaoBasquete = false, existe = false;
         int decisao;
         
         String timeEscolhido = lerString("Digite o nome do time que você deseja alterar: ");
@@ -127,7 +150,15 @@ public class Principal {
                 switch (decisao){
                     case 1:
                         String nome = lerString("Digite o novo nome: ");
-                        time.setNome(nome);
+                        for (TimeDeFutebol timeFutebol : listaTimesFutebol){
+                            if (timeFutebol.nome.equals(nome)){
+                                System.out.println("Edição inválida! Já tem um time registrado com esse nome.");
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if(existe == false){
+                            time.setNome(nome);}
                         break;
                     case 2:
                         String cidade = lerString("Digite a nova cidade: ");
@@ -165,7 +196,15 @@ public class Principal {
                 switch (decisao){
                     case 1:
                         String nome = lerString("Digite o novo nome: ");
-                        time.setNome(nome);
+                        for (TimeDeBasquete timeBasquete : listaTimesBasquete){
+                            if (timeBasquete.nome.equals(nome)){
+                                System.out.println("Edição inválida! Já tem um time registrado com esse nome.");
+                                existe = true;
+                                break;
+                            }
+                        }
+                        if(existe == false){
+                            time.setNome(nome);}
                         break;
                     case 2:
                         String cidade = lerString("Digite a nova cidade: ");
@@ -248,10 +287,8 @@ public class Principal {
         System.out.println("2| Listar todas as informações de um time através do seu nome");
         int decisao = lerInt(frase);
         
-        System.out.println();
-        
         if (decisao == 1){
-            ArrayList<Time> timesGeral = new ArrayList<Time>();
+            ArrayList<Time> timesGeral = new ArrayList<Time>(); // Criando uma nova lista para adicionar todos os times independente da modalidade
 
             for (TimeDeFutebol time : listaTimesFutebol){
                 timesGeral.add(time);
@@ -261,7 +298,8 @@ public class Principal {
             }
             
             listagemOrdenada(timesGeral);
-
+            
+            System.out.println();
             System.out.println("Nome | Cidade | Ano de Fundação");
 
             for (Time time : timesGeral){
@@ -270,30 +308,34 @@ public class Principal {
         } 
         else{
             String nomeTime = lerString("Digite o nome do time que você deseja ter todas informações: ");
+            System.out.println();
+            
             for (TimeDeFutebol time : listaTimesFutebol){
                 if ((time.nome).equals(nomeTime)){
-                    System.out.println("Nome | Cidade | Técnico | Ano de Fundação | Tamanho do Elenco | Capitão | Aproveitamento em casa");
-                    System.out.println(time.nome + " | " + time.cidade + " | " + time.tecnico + " | " + time.anoFundacao + " | " + time.tamanhoElenco + " | "  + time.capitao + " | "  + time.aproveitamentoCasa + "%");
+                    System.out.println("Nome | Cidade | Técnico | Ano de Fundação | Tamanho do Elenco | Modalidade | Capitão | Aproveitamento em casa");
+                    System.out.println(time.nome + " | " + time.cidade + " | " + time.tecnico + " | " + time.anoFundacao + " | " + time.tamanhoElenco + " | " + time.modalidade + " | "  + time.capitao + " | "  + time.aproveitamentoCasa + "%");
                     break;
                 }
             }
             for (TimeDeBasquete time : listaTimesBasquete){
                 if ((time.nome).equals(nomeTime)){
-                    System.out.println("Nome | Cidade | Técnico | Ano de Fundação | Tamanho do Elenco | Aproveitamento do time em TL | Média de altura dos jogadores");
-                    System.out.println(time.nome + " | " + time.cidade + " | " + time.tecnico + " | " + time.anoFundacao + " | " + time.tamanhoElenco + " | "  + time.aproveitamentoTiroLivre + "% | "  + time.mediaAltura);
+                    System.out.println("Nome | Cidade | Técnico | Ano de Fundação | Tamanho do Elenco | Modalidade | Aproveitamento do time em TL | Média de altura dos jogadores");
+                    System.out.println(time.nome + " | " + time.cidade + " | " + time.tecnico + " | " + time.anoFundacao + " | " + time.tamanhoElenco + " | " + time.modalidade + " | "  + time.aproveitamentoTiroLivre + "% | "  + time.mediaAltura);
                     break;
                 }
             }
         }
-        System.out.println();
     }
 
-    public static void listagemOrdenada(ArrayList<Time> timesGeral){
-        System.out.println();
-        System.out.println("1| Nome");
-        System.out.println("2| Cidade");
-        System.out.println("3| Ano de fundação");
-        int resposta = lerInt("Digite por qual atributo você deseja ordenar a lista: ");
+    public static void listagemOrdenada(ArrayList<Time> timesGeral){ // Função que ordena a lista enviada de acordo com o atributo desejado pelo usuário
+        int resposta = 0;
+        while(resposta < 1 || resposta > 3){
+            System.out.println();    
+            System.out.println("1| Nome");
+            System.out.println("2| Cidade");
+            System.out.println("3| Ano de fundação");
+            resposta = lerInt("Digite por qual atributo você deseja ordenar a lista: ");
+        }
 
         if(resposta == 1){
             timesGeral.sort(Comparator.comparing(Time::getNome));
@@ -331,3 +373,4 @@ public class Principal {
         return leitor.nextDouble();
     }
 }
+
