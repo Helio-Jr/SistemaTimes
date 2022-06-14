@@ -185,8 +185,10 @@ public class Principal {
                         time.setAproveitamentoCasa(aproveitamentoCasa);
                         break;
                 }
-                System.out.println("Time alterado.");
-                break;
+                if(existe == false){
+                    System.out.println("Time alterado.");
+                    break;
+                }
             }   
         }
         for (TimeDeBasquete time : listaTimesBasquete){ // Laço de repetição For que tem como objetivo passar por todos os times presentes na Arraylist listaTimesBasquete
