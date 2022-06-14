@@ -56,6 +56,7 @@ public class Principal {
     }
     
     public static int escolhaAtributoEdit(String frase, int modalidade){ // Função que imprime todos os possíveis atributos dependendo da modalidade do time, após isso, recebe um valor do usuário
+        System.out.println();
         System.out.println("1| Nome");
         System.out.println("2| Cidade");
         System.out.println("3| Técnico");
@@ -285,6 +286,8 @@ public class Principal {
     }
     
     public static void tipoListagem(String frase, ArrayList<TimeDeFutebol> listaTimesFutebol, ArrayList<TimeDeBasquete> listaTimesBasquete){ // Função que permite o usuário listar todos os objetos cadastrados em formato tabular ou apenas um deles através do seu nome
+        boolean existe = false;
+        
         System.out.println();
         System.out.println("1| Listar todos os times registrados");
         System.out.println("2| Listar todas as informações de um time através do seu nome");
@@ -300,7 +303,7 @@ public class Principal {
                 timesGeral.add(time);
             }
             
-            //listagemOrdenada(timesGeral);
+            listagemOrdenada(timesGeral);
             
             System.out.println();
             System.out.println("Nome | Cidade | Ano de Fundação");
@@ -317,6 +320,7 @@ public class Principal {
                 if ((time.nome).equals(nomeTime)){
                     System.out.println("Nome | Cidade | Técnico | Ano de Fundação | Tamanho do Elenco | Modalidade | Capitão | Aproveitamento em casa");
                     System.out.println(time.nome + " | " + time.cidade + " | " + time.tecnico + " | " + time.anoFundacao + " | " + time.tamanhoElenco + " | " + time.modalidade + " | "  + time.capitao + " | "  + time.aproveitamentoCasa + "%");
+                    existe = true;
                     break;
                 }
             }
@@ -324,8 +328,13 @@ public class Principal {
                 if ((time.nome).equals(nomeTime)){
                     System.out.println("Nome | Cidade | Técnico | Ano de Fundação | Tamanho do Elenco | Modalidade | Aproveitamento do time em TL | Média de altura dos jogadores");
                     System.out.println(time.nome + " | " + time.cidade + " | " + time.tecnico + " | " + time.anoFundacao + " | " + time.tamanhoElenco + " | " + time.modalidade + " | "  + time.aproveitamentoTiroLivre + "% | "  + time.mediaAltura);
+                    existe = true;
                     break;
                 }
+            }
+
+            if(existe == false){
+                System.out.println("Não existe nenhum time registrado com esse nome.");
             }
         }
     }
@@ -376,4 +385,3 @@ public class Principal {
         return leitor.nextDouble();
     }
 }
-
