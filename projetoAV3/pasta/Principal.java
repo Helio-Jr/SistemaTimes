@@ -1,5 +1,4 @@
 package pasta;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.InputMismatchException;
@@ -376,7 +375,7 @@ public class Principal {
     public static String lerString(String texto){ // Função para receber valores String do usuário
         Scanner leitor = new Scanner(System.in); 
         System.out.print(texto);
-        return leitor.next();
+        return leitor.nextLine();
     }
     
     public static double lerDouble(String texto){ // Função para receber valores double do usuário
