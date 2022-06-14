@@ -231,8 +231,11 @@ public class Principal {
                         time.setAproveitamentoTiroLivre(aproveitamento);
                         break;
                 }
+
+                if(existe == false){
                 System.out.println("Time alterado.");
                 break;
+                }
             }   
         }
         
@@ -297,7 +300,7 @@ public class Principal {
                 timesGeral.add(time);
             }
             
-            listagemOrdenada(timesGeral);
+            //listagemOrdenada(timesGeral);
             
             System.out.println();
             System.out.println("Nome | Cidade | Ano de Fundação");
